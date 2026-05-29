@@ -19,7 +19,7 @@ document.getElementById("loginForm").addEventListener("submit", async function(e
         localStorage.setItem("username", data.username);
         
         // JEMBATAN KELUAR FOLDER: Melompat ke landingpage.html yang ada di folder luar
-        window.location.href = "../landingpage.html";
+        window.location.href = "../index.html";
          
     } else {
         const alertBox = document.getElementById("alertBox");
