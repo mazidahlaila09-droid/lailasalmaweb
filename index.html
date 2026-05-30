@@ -175,7 +175,7 @@ http://www.templatemo.com/tm-519-beauty
       </div>
     </div>
     <div class="col-md-4">
-      <form action="#" method="post" class="tm-contact-form">
+      <form id="contactForm" class="tm-contact-form">
         <div class="form-group mb-4">
           <input type="text" id="contact_name" name="contact_name" class="form-control" placeholder="Nama" required/>
         </div>
@@ -242,6 +242,29 @@ http://www.templatemo.com/tm-519-beauty
 </script>
 
 <script src="login/js/welcome.js"></script>
+<p id="contactMessage" style="text-align: center; margin-top: 15px; font-weight: bold; display: none; padding: 10px; border-radius: 4px;"></p>
+
+  <script>
+  document.getElementById("contactForm").addEventListener("submit", function(e) {
+      e.preventDefault(); // Menahan halaman agar tidak reload/error saat dikirim
+
+      const contactMessage = document.getElementById("contactMessage");
+      
+      // Mengaktifkan kotak hijau penanda sukses kirim pesan
+      contactMessage.style.display = "block";
+      contactMessage.style.background = "#8cc63f"; 
+      contactMessage.style.color = "white";
+      contactMessage.innerText = "Pesan Anda berhasil dikirim! Terima kasih.";
+
+      // Mengosongkan form input kembali setelah tombol dikirim
+      document.getElementById("contactForm").reset();
+
+      // Menyembunyikan notifikasi setelah 3 detik
+      setTimeout(() => {
+          contactMessage.style.display = "none";
+      }, 3000);
+  });
+  </script>
   
 </body>
 </html>
