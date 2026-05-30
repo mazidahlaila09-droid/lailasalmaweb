@@ -93,6 +93,8 @@
       text-align: center;
       margin-top: 15px;
       font-size: 14px;
+      border-radius: 4px;
+      display: none; /* Sembunyikan dulu sebelum ada pesan */
     }
   </style>
 </head>
@@ -128,7 +130,54 @@
     </form>
   </div>
 
-  <script src="login/js/register.js" defer></script>
+  <script>
+  document.getElementById("registerForm").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const username = document.getElementById("username").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const password = document.getElementById("password").value.trim();
+      const messageElement = document.getElementById("message");
+
+      // Efek teks loading sebentar biar kelihatan prosesnya
+      messageElement.style.display = "block";
+      messageElement.style.background = "#555";
+      messageElement.style.color = "white";
+      messageElement.style.padding = "10px";
+      messageElement.innerText = "Sedang memproses...";
+
+      try {
+          const res = await fetch("https://herisusanta.my.id/javalogin/api/auth.php", {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/x-www-form-urlencoded"
+              },
+              body: `action=register&username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+          });
+
+          const data = await res.json();
+
+          if (data.status === "success") {
+              // WARNA HIJAU JIKA BERHASIL DAFTAR
+              messageElement.style.background = "#8cc63f";
+              messageElement.innerText = "Registrasi berhasil, silakan login!";
+              
+              // Jeda 1.5 detik langsung otomatis balik ke halaman depan (index.html)
+              setTimeout(() => {
+                  window.location.href = "index.html";
+              }, 1500);
+          } else {
+              // WARNA MERAH JIKA USERNAME KEMBAR / ERROR (Sesuai LKPD Style Nomor 10)
+              messageElement.style.background = "#e44e4e"; 
+              messageElement.innerText = data.message || "Gagal registrasi";
+          }
+      } catch (error) {
+          // Antisipasi jika server sedang down
+          messageElement.style.background = "#e44e4e";
+          messageElement.innerText = "Terjadi kesalahan koneksi ke server!";
+      }
+  });
+  </script>
 
 </body>
 </html>
